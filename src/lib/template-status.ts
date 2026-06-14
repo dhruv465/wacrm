@@ -14,6 +14,10 @@ export interface TemplateStatusDisplay {
   classes: string;
 }
 
+export interface ResolvedTemplateStatusDisplay extends TemplateStatusDisplay {
+  key: MessageTemplateStatus;
+}
+
 export const templateStatusConfig: Record<
   MessageTemplateStatus,
   TemplateStatusDisplay
@@ -51,3 +55,24 @@ export const templateStatusConfig: Record<
     classes: 'bg-slate-700/30 text-slate-500 border-slate-700/40',
   },
 };
+
+const LEGACY_STATUS_MAP: Record<string, MessageTemplateStatus> = {
+  Draft: 'DRAFT',
+  Pending: 'PENDING',
+  Approved: 'APPROVED',
+  Rejected: 'REJECTED',
+};
+
+export function resolveTemplateStatusDisplay(
+  rawStatus: string | null | undefined,
+): ResolvedTemplateStatusDisplay {
+  const key =
+    LEGACY_STATUS_MAP[rawStatus ?? ''] ??
+    ((rawStatus ?? 'DRAFT').toUpperCase() as MessageTemplateStatus);
+  const config = templateStatusConfig[key] ?? templateStatusConfig.DRAFT;
+
+  return {
+    key: templateStatusConfig[key] ? key : 'DRAFT',
+    ...config,
+  };
+}

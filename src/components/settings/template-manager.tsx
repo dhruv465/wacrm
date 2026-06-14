@@ -40,7 +40,7 @@ import type {
   TemplateButton,
   TemplateSampleValues,
 } from '@/types';
-import { templateStatusConfig } from '@/lib/template-status';
+import { resolveTemplateStatusDisplay } from '@/lib/template-status';
 import {
   extractVariableIndices,
   TEMPLATE_LIMITS,
@@ -488,8 +488,8 @@ export function TemplateManager() {
       ) : (
         <div className="grid gap-3">
           {templates.map((template) => {
-            const statusKey = template.status || 'DRAFT';
-            const status = templateStatusConfig[statusKey];
+            const status = resolveTemplateStatusDisplay(template.status);
+            const statusKey = status.key;
             return (
               <Card
                 key={template.id}

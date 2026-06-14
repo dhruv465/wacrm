@@ -69,6 +69,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-theme={DEFAULT_THEME}
+      suppressHydrationWarning
       className={`${inter.variable} h-full antialiased`}
       // The `theme-boot` script below rewrites `data-theme` on <html>
       // from localStorage before React hydrates, so for any non-default
